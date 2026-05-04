@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TeenSpark | Contact – Get in Touch</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* Same global styles as index.html (copy exactly from index for consistency) */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: transparent; color: var(--text-primary); line-height: 1.5; transition: color 0.2s, background-color 0.2s; min-height: 100vh; position: relative; }
+    #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; display: block; }
+    .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); z-index: -1; backdrop-filter: blur(2px); transition: background 0.3s; }
+    body.dark .overlay { background: rgba(0, 0, 0, 0.65); }
+    :root {
+      --bg-glass: rgba(255, 255, 255, 0.85);
+      --bg-card: rgba(255, 255, 255, 0.9);
+      --text-primary: #111827;
+      --text-secondary: #1f2937;
+      --accent: #8b5cf6;
+      --accent-glow: rgba(139, 92, 246, 0.5);
+      --border: rgba(255, 255, 255, 0.3);
+      --footer-bg: rgba(241, 245, 249, 0.8);
+    }
+    body.dark {
+      --bg-glass: rgba(15, 23, 42, 0.85);
+      --bg-card: rgba(30, 41, 59, 0.9);
+      --text-primary: #f1f5f9;
+      --text-secondary: #cbd5e1;
+      --accent: #a78bfa;
+      --accent-glow: rgba(167, 139, 250, 0.5);
+      --border: rgba(51, 65, 85, 0.5);
+      --footer-bg: rgba(15, 23, 42, 0.8);
+    }
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 2rem; position: relative; z-index: 2; }
+    nav {
+      background: var(--bg-glass);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .logo {
+      font-size: 1.7rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent), #c084fc);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      align-items: center;
+    }
+    .nav-links a {
+      text-decoration: none;
+      font-weight: 600;
+      color: var(--text-secondary);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active {
+      color: var(--accent);
+    }
+    .theme-toggle {
+      background: var(--bg-glass);
+      border: 1px solid var(--border);
+      border-radius: 3rem;
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      backdrop-filter: blur(4px);
+    }
+    .contact-form {
+      max-width: 720px;
+      margin: 3rem auto;
+      background: var(--bg-card);
+      backdrop-filter: blur(8px);
+      border-radius: 2rem;
+      padding: 2.5rem;
+      border: 1px solid var(--border);
+      box-shadow: 0 25px 40px -12px rgba(0,0,0,0.2);
+    }
+    .contact-form h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    .contact-form p {
+      text-align: center;
+      margin-bottom: 2rem;
+      color: var(--text-secondary);
+    }
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 0.9rem 1.2rem;
+      border-radius: 1rem;
+      border: 1px solid var(--border);
+      background: var(--bg-glass);
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      backdrop-filter: blur(4px);
+    }
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+    .error-msg {
+      color: #ef4444;
+      font-size: 0.8rem;
+      margin-top: 0.3rem;
+      display: block;
+    }
+    .success-msg {
+      background: rgba(16, 185, 129, 0.2);
+      border-left: 4px solid #10b981;
+      padding: 1rem;
+      border-radius: 1rem;
+      margin-top: 1rem;
+      color: var(--text-primary);
+    }
+    button[type="submit"] {
+      background: var(--accent);
+      border: none;
+      width: 100%;
+      padding: 1rem;
+      font-weight: 700;
+      font-size: 1rem;
+      border-radius: 2rem;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    button[type="submit"]:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.05);
+    }
+    footer {
+      margin-top: 4rem;
+      background: var(--footer-bg);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid var(--border);
+      padding: 2rem 0;
+      text-align: center;
+      color: var(--text-secondary);
+    }
+    @media (max-width: 768px) {
+      .nav-container { flex-direction: column; gap: 1rem; }
+      .contact-form { margin: 2rem 1rem; padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bg-canvas"></canvas>
+  <div class="overlay"></div>
+
+  <nav>
+    <div class="nav-container">
+      <div class="logo">TeenSpark</div>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="contact.html" class="active">Contact</a>
+        <div class="theme-toggle" id="themeToggle">
+          <i class="fas fa-moon"></i>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="container">
+      <div class="contact-form">
+        <h2><i class="fas fa-envelope" style="color: var(--accent);"></i> Contact Us</h2>
+        <p>Have questions? Want to collaborate? Reach out to the TeenSpark team.</p>
+        
+        <form id="contactForm">
+          <div class="form-group">
+            <label for="name">Full Name *</label>
+            <input type="text" id="name" name="name" required>
+            <div class="error-msg" id="nameError"></div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address *</label>
+            <input type="email" id="email" name="email" required>
+            <div class="error-msg" id="emailError"></div>
+          </div>
+          <div class="form-group">
+            <label for="message">Message *</label>
+            <textarea id="message" name="message" rows="5" required></textarea>
+            <div class="error-msg" id="messageError"></div>
+          </div>
+          <button type="submit">Send Message <i class="fas fa-paper-plane"></i></button>
+          <div id="formStatus"></div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 TeenSpark — Empowering the next generation of creators & innovators</p>
+      <p style="margin-top: 0.5rem; font-size: 0.8rem;"><i class="fas fa-heart" style="color: var(--accent);"></i> We reply within 24h</p>
+    </div>
+  </footer>
+
+  <!-- Three.js same as index -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.128.0/build/three.module.js"
+      }
+    }
+  </script>
+
+  <script type="module">
+    import * as THREE from 'three';
+    const canvas = document.getElementById('bg-canvas');
+    const scene = new THREE.Scene();
+    scene.background = null;
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(0, 2, 8);
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    
+    // Particles
+    const particleCount = 1200;
+    const particlesGeometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(particleCount * 3);
+    for (let i = 0; i < particleCount; i++) {
+      positions[i*3] = (Math.random() - 0.5) * 40;
+      positions[i*3+1] = (Math.random() - 0.5) * 20;
+      positions[i*3+2] = (Math.random() - 0.5) * 25 - 10;
+    }
+    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    const particleMaterial = new THREE.PointsMaterial({ color: 0x8b5cf6, size: 0.08, transparent: true, opacity: 0.7, blending: THREE.AdditiveBlending });
+    const particleSystem = new THREE.Points(particlesGeometry, particleMaterial);
+    scene.add(particleSystem);
+    
+    // Toruses
+    const ringGeo = new THREE.TorusGeometry(1.2, 0.05, 64, 200);
+    const ringMat = new THREE.MeshStandardMaterial({ color: 0xa78bfa, emissive: 0x4c1d95, emissiveIntensity: 0.4 });
+    const ring = new THREE.Mesh(ringGeo, ringMat);
+    ring.position.set(-2, 1, -3);
+    scene.add(ring);
+    const ring2Geo = new THREE.TorusGeometry(1.6, 0.04, 64, 200);
+    const ring2Mat = new THREE.MeshStandardMaterial({ color: 0xc084fc, emissive: 0x6d28d9, emissiveIntensity: 0.3 });
+    const ring2 = new THREE.Mesh(ring2Geo, ring2Mat);
+    ring2.position.set(2.5, -1, -4);
+    scene.add(ring2);
+    
+    const coreGeo = new THREE.IcosahedronGeometry(0.6, 0);
+    const coreMat = new THREE.MeshStandardMaterial({ color: 0x8b5cf6, emissive: 0x4c1d95, emissiveIntensity: 0.5 });
+    const coreMesh = new THREE.Mesh(coreGeo, coreMat);
+    coreMesh.position.set(0, 0.5, -2);
+    scene.add(coreMesh);
+    
+    const ambient = new THREE.AmbientLight(0x404060);
+    scene.add(ambient);
+    const light1 = new THREE.PointLight(0x8b5cf6, 0.8);
+    light1.position.set(2,3,4);
+    scene.add(light1);
+    const light2 = new THREE.PointLight(0xc084fc, 0.6);
+    light2.position.set(-2,1,5);
+    scene.add(light2);
+    
+    const starCount = 800;
+    const starGeo = new THREE.BufferGeometry();
+    const starPos = new Float32Array(starCount*3);
+    for(let i=0;i<starCount;i++){
+      starPos[i*3]=(Math.random()-0.5)*200;
+      starPos[i*3+1]=(Math.random()-0.5)*100;
+      starPos[i*3+2]=(Math.random()-0.5)*80-40;
+    }
+    starGeo.setAttribute('position', new THREE.BufferAttribute(starPos,3));
+    const stars = new THREE.Points(starGeo, new THREE.PointsMaterial({ color:0xffffff, size:0.1, transparent:true, opacity:0.4 }));
+    scene.add(stars);
+    
+    let time = 0;
+    function animate() {
+      requestAnimationFrame(animate);
+      time += 0.008;
+      particleSystem.rotation.y = time * 0.2;
+      particleSystem.rotation.x = Math.sin(time*0.1)*0.2;
+      ring.rotation.x = time*0.5; ring.rotation.y = time*0.3;
+      ring2.rotation.x = time*0.4; ring2.rotation.z = time*0.2;
+      coreMesh.rotation.y = time*0.6; coreMesh.rotation.x = time*0.3;
+      coreMesh.position.y = 0.5 + Math.sin(time*1.5)*0.1;
+      stars.rotation.y = time*0.02;
+      camera.lookAt(0,0.5,-1);
+      renderer.render(scene, camera);
+    }
+    animate();
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+
+  <script>
+    // Dark mode & form validation
+    function initTheme() {
+      const saved = localStorage.getItem('theme');
+      if (saved === 'dark') {
+        document.body.classList.add('dark');
+        document.getElementById('themeToggle').innerHTML = '<i class="fas fa-sun"></i>';
+      } else {
+        document.body.classList.remove('dark');
+        document.getElementById('themeToggle').innerHTML = '<i class="fas fa-moon"></i>';
+      }
+    }
+    function toggleTheme() {
+      if (document.body.classList.contains('dark')) {
+        document.body.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+        document.getElementById('themeToggle').innerHTML = '<i class="fas fa-moon"></i>';
+      } else {
+        document.body.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+        document.getElementById('themeToggle').innerHTML = '<i class="fas fa-sun"></i>';
+      }
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      initTheme();
+      document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+      
+      const form = document.getElementById('contactForm');
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        let isValid = true;
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const message = document.getElementById('message').value.trim();
+        document.getElementById('nameError').innerText = '';
+        document.getElementById('emailError').innerText = '';
+        document.getElementById('messageError').innerText = '';
+        if (!name) { document.getElementById('nameError').innerText = 'Name is required'; isValid = false; }
+        if (!email || !/^\S+@\S+\.\S+$/.test(email)) { document.getElementById('emailError').innerText = 'Valid email required'; isValid = false; }
+        if (!message) { document.getElementById('messageError').innerText = 'Message cannot be empty'; isValid = false; }
+        if (isValid) {
+          document.getElementById('formStatus').innerHTML = '<div class="success-msg"><i class="fas fa-check-circle"></i> Thank you! We’ll get back to you soon.</div>';
+          form.reset();
+          setTimeout(() => { document.getElementById('formStatus').innerHTML = ''; }, 4000);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
